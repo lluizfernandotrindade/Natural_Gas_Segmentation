@@ -1,19 +1,20 @@
-import src.plotter
+import math
 import numpy as np
 import tensorflow as tf 
 
+import src.plotter
+
 
 class TrainMonitor(tf.keras.callbacks.Callback):
-    def __init__(self, test_data, epoch_interval=None):
+    def __init__(self, data, epoch_interval=None):
         self.epoch_interval = epoch_interval
-        self.test_data = test_data
+        self.data = data
 
     def on_epoch_end(self, epoch, logs=None):
         
         if self.epoch_interval and epoch % self.epoch_interval == 0:
-            test_images = next(iter(self.test_data))
             
-            plotter.plot_result(test_images,
+            src.plotter.plot_result(next(iter(self.data)),
                                 self.model,
                                 self.model.mask_ratio
                                )
