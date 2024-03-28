@@ -1,0 +1,11 @@
+n_epochs: 300
+n_units_lstm_layers: [256, 128, 64]
+n_filters_dcunet: 64
+learning_rate: 1e-4
+batch_size: 70
+SHUFFLE_BUFFER_SIZE: 70
+concatenate_train_val_sequences: true
+validation_split_proportion: 0.35
+augmentation: false
+# When not using cross validation send null as value
+cross_validation_folds: null

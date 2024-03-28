@@ -1,0 +1,61 @@
+regularexpression:
+  expr_regular_match_filenames_2d: "(([0-9]{4}\\-[0-9]{4})(_ANP|ANP|_Ext|Ext|_E|E|_A|A|_CPGEO|CPGEO|(_{1}[0-9]+)*)?)"
+  expr_regular_match_filenames_3d_sgy: "([0-9A-Za-z_]+)(.sgy)"
+  expr_regular_match_filenames_3d_json: "([0-9A-Za-z_]+)-([A-za-z_]+).json"
+
+gas_config:
+  n_spacing_pixels_gas: 10
+
+defaults:
+  - roi_config: 1_trace
+  - model_config: with_augm
+
+seed_config:
+  SEED: 123
+
+file_path_config:
+#  train_json: "D:/Projeto-Eneva/Datasets_Terceira_Release_2022/Dataset_Treino_Branco_Vermelho_Real_Azul_BrancoNorte_Caboclo_Tesoura_Teste_Preto/[more_val]Dataset_Treino_Branco_Vermelho_Real_Azul_BrancoNorte_Caboclo_Tesoura_Teste_Preto.json"
+#  base_dir: "D:/Projeto-Eneva/Datasets_Terceira_Release_2022"
+
+  # train_json: "D:/Projeto-Eneva/Execuções_Primeira_Release_Fase3/Inferencia_GVP_Novos_Prospectos/dataset_treino_gvp_gvte_teste_gvp_gvb.json"
+  # base_dir: "D:/Projeto-Eneva/Datasets_Primeira_Release_2023/Dataset_Treino_GVP"
+
+  # train_json: "D:/Projeto-Eneva/Execuções_Primeira_Release_Fase3/Inferencia_GVP_Novos_Prospectos/dataset_treino_gvp_gvte_lago_teste_gvp_gvb_lago.json"
+  # base_dir: "D:/Projeto-Eneva/Datasets_Primeira_Release_2023/Dataset_Treino_GVP"
+
+  # Tec
+  # train_json: "/home/felipejordao/Documents/ProjetoEneva/DatasetsProjetoEneva/Datasets_Primeira_Release/dataset_treino_gvp_gvte_teste_gvp_gvb.json"
+  # base_dir: "/home/felipejordao/Documents/ProjetoEneva/DatasetsProjetoEneva/Datasets_Primeira_Release/Dataset_Treino_GVP"
+
+  #Treino Target GVMT
+  # Tec
+  # train_json: '/home/felipejordao/Documents/ProjetoEneva/DatasetsProjetoEneva/Datasets_Primeira_Release/Dataset_Matero/Treino_Dataset_GVCA_GVBL_Target_GVMT.json'
+  # base_dir: "/home/felipejordao/Documents/ProjetoEneva/DatasetsProjetoEneva/Datasets_Primeira_Release/Dataset_Matero"
+
+  # Local
+  # train_json: "D:/Projeto-Eneva/Datasets_Primeira_Release_2023/Dataset_Matero/Treino_Dataset_GVCA_GVBL_Target_GVMT.json"
+  # train_json: "D:/Projeto-Eneva/Datasets_Primeira_Release_2023/Dataset_Matero/Treino_Dataset_GVCA_GVBL_Target_GVMT_Retroalimentacao.json"
+  # base_dir: "D:/Projeto-Eneva/Datasets_Primeira_Release_2023/Dataset_Matero"
+
+  # Treino Target Linhas loc BL102 (Treino GVMT E GVBL)
+  # train_json: "D:/Projeto-Eneva/ALGORITMOS_CADASTRADOS/generic_training/horizons_dataset_treino/Dataset_Treino_GVMT_GVBL.json"
+  # train_json: "D:/Projeto-Eneva/ALGORITMOS_CADASTRADOS/generic_training/horizons_dataset_retroalimentacao_bl102/train_dataset.json"
+  # train_json: "D:/Projeto-Eneva/ALGORITMOS_CADASTRADOS/generic_training/horizons_dataset_retroalimentacao_bl102/train_dataset.json"
+  # base_dir: "D:/Projeto-Eneva/ALGORITMOS_CADASTRADOS/generic_training/horizons_dataset_retroalimentacao_bl102"
+  # pretrained_weights: null
+
+  # When not using lines cuts send null as value
+  #campos_base_dir: "C:/Users/T-Gamer/Documents/Projeto-Eneva/Projetos/convert_shapefile_to_ascii"
+  # campos_base_dir: "/home/felipejordao/Documents/ProjetoEneva/generic_training/data"
+  # campos_base_dir: "D:/Projeto-Eneva/ALGORITMOS_CADASTRADOS/generic_training/data/poligonos_hugo"
+  # campos_base_dir: "D:/Projeto-Eneva/ALGORITMOS_CADASTRADOS/generic_training/data/poligono_corte_lago"
+  # campos_base_dir: "D:/Projeto-Eneva/ALGORITMOS_CADASTRADOS/generic_training/data/poligonos_corte_BL102_env44_env42"
+
+  #Eval 
+  base_dir: ""
+  train_json: ""
+  campos_base_dir: null
+
+output_paths:
+  tensorboard: "Teste_Locations_BL102"
+  out_directory: "Teste_Locations_BL102"
