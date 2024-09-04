@@ -1,0 +1,5 @@
+roi_size: 200
+n_spacing_pixels_roi: 30
+roi_separation_in_percentage: 0.30
+n_traces_block: 3
+random_displacement: false
