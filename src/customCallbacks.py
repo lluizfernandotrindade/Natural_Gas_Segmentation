@@ -34,6 +34,6 @@ def cosine_schedule(base_lr, total_steps, warmup_steps):
         if warmup_steps:
             lr = lr * tf.minimum(1.0, epoch / warmup_steps)
 
-        return lr
+        return float(lr)
 
     return step_fn

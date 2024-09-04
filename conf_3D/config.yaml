@@ -1,0 +1,44 @@
+regularexpression:
+  expr_regular_match_filenames_2d: "(([0-9]{4}\\-[0-9]{4})(_ANP|ANP|_Ext|Ext|_E|E|_A|A|_CPGEO|CPGEO|(_{1}[0-9]+)*)?)"
+  expr_regular_match_filenames_3d_sgy: "([0-9A-Za-z_]+)(.sgy)"
+  expr_regular_match_filenames_3d_json: "([0-9A-Za-z_]+)-([A-za-z_]+).json"
+
+gas_config:
+  n_spacing_pixels_gas: 8
+
+roi_config:
+  roi_size: 224
+  n_spacing_pixels_roi: 25
+  roi_separation_in_percentage: 0.30
+  multiple: False
+
+train_config:
+  epochs: 2000
+  learning_rate: 1e-4
+  batch_size: 256
+  SHUFFLE_BUFFER_SIZE: 280
+  concatenate_train_val_sequences: True
+  to_categorical: True
+  validation_split_proportion: 0.35
+  augmentation: False
+  patience: 12
+  cross_validation_folds: null  # When not using cross validation send null as value
+
+warm_up_config:
+  learning_rate_base: 0.0001
+  warmup_epoch: 20
+  batch_size: 100
+
+seed_config:
+  SEED: 123
+
+
+file_config:
+  train_json: "3D_json-fold.json"
+  base_dir: ""
+  fields_base_dir: "C:/Users/T-Gamer/Documents/Projeto-Eneva/Projetos/convert_shapefile_to_ascii"
+  save_sgy: True
+
+output_paths:
+  tensorboard: "test3D"
+  out_directory: "test3D"
