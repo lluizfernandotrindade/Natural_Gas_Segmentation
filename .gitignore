@@ -1,0 +1,11 @@
+**/.ipynb_checkpoints
+**/__pycache__
+.ipynb_checkpoints
+data/
+pretrain/
+json_files/
+2D/
+3D/
+Results_article/
+Results/
+parnaiba_2D/
