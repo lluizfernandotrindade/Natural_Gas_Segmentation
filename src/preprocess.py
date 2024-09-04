@@ -1,7 +1,9 @@
 import skimage
 import numpy as np
 
-
+def standarlization(data):
+    return (data - data.mean()) / (data.std())
+    
 def standarlization_patches(patches_array):
     
     for i in range(patches_array.shape[0]):
@@ -19,13 +21,10 @@ def normalize_between_zero_one(
     Returns:
         data (nparray): nparray of the same dimension as the input, normalized between [0,+1].
     """
-    maxAbsValue = np.abs(np.max(data)) if np.abs(np.max(data)) >= np.abs(np.min(data)) else np.abs(np.min(data))
-    data = data / maxAbsValue 
-    
-    maxValue = 1
-    minValue = -1
+    #maxAbsValue = np.abs(np.max(data)) if np.abs(np.max(data)) >= np.abs(np.min(data)) else np.abs(np.min(data))
+    #data = data / maxAbsValue 
 
-    return ((data - minValue) / (maxValue - minValue))
+    return ((data - np.min(data)) / (np.max(data) - np.min(data)))
 
 
 def normalize_data(

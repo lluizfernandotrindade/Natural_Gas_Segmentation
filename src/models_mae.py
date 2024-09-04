@@ -1,6 +1,6 @@
 import tensorflow as tf
 import keras.backend as K
-from src.vision_transformer import PatchEmbed, Blocks, Decoder, Encoder
+from src.vision_transformer import PatchEmbed, Decoder, Encoder
 from src.pos_embed import get_2d_sincos_pos_embed
 from src.util import torch_gather, tf_function, tf_patchify, tf_unpatchify, tf_patches_2D, tf_filters_patches_2D
 import numpy as np

@@ -69,7 +69,7 @@ def my_numpy_func(x, len_keep):
 def tf_function(mask, len_keep): 
     y = tf.numpy_function(my_numpy_func, [mask, len_keep], tf.float32)
     return y
-  
+
 def patchify(patch_embed_size, imgs, channel):
     p = patch_embed_size
     assert imgs.shape[1] == imgs.shape[2] and imgs.shape[2] % p == 0

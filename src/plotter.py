@@ -2,7 +2,7 @@ import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
-
+import src.preprocess 
 import src.metrics
 
 def plot_result(x_test,
@@ -10,7 +10,7 @@ def plot_result(x_test,
                 masked_ration=0.75
                ):
 
-    x = x_test
+    x = src.preprocess.standarlization(x_test)
     latent, mask, ids_restore = model.forward_encoder(x, 
                                                       masked_ration
                                                      )
@@ -23,7 +23,6 @@ def plot_result(x_test,
 
     y = model.unpatchify(y)
     mask = model.unpatchify(mask)
-    y = tf.einsum('nhwc->nhwc', y)
 
     idx = np.random.choice(x_test.shape[0])
     print(f"\nIdx chosen: {idx}")

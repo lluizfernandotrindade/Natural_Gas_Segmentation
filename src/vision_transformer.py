@@ -32,8 +32,8 @@ class PatchEmbed(tf.keras.layers.Layer):
     def call(self, x):
         
             B, H, W, C = x.shape
-            assert H == self.img_size[0], f"Input image height ({H}) doesn't match model ({self.img_size[0]})."
-            assert W == self.img_size[1], f"Input image width ({W}) doesn't match model ({self.img_size[1]})."
+            #assert H == self.img_size[0], f"Input image height ({H}) doesn't match model ({self.img_size[0]})."
+            #assert W == self.img_size[1], f"Input image width ({W}) doesn't match model ({self.img_size[1]})."
             x = self.proj(x)
 
             if self.flatten:
@@ -42,52 +42,6 @@ class PatchEmbed(tf.keras.layers.Layer):
             x = self.norm(x)
                 
             return x
-
-
-
-class Blocks(tf.keras.layers.Layer):
-    def __init__(
-        self, embed_dim, mlp_dim, num_heads, dropout_rate=0.0, attention_dropout_rate=0.0, **kwargs
-    ):
-        super(Blocks, self).__init__(**kwargs)
-        
-        self.mha = tf.keras.layers.MultiHeadAttention(
-            num_heads=num_heads, 
-            key_dim=(embed_dim // num_heads), 
-            dropout=attention_dropout_rate
-        )
-        
-        self.dense_0 = tf.keras.layers.Dense(
-            units=embed_dim*mlp_dim,
-            activation="gelu",
-        )
-        self.dense_1 = tf.keras.layers.Dense(
-            units=embed_dim,
-            activation="linear",
-        )
-
-        self.dropout_0 = tf.keras.layers.Dropout(rate=dropout_rate)
-        self.dropout_1 = tf.keras.layers.Dropout(rate=dropout_rate)
-
-        self.norm_0 = tf.keras.layers.LayerNormalization(epsilon=1e-6)
-        self.norm_1 = tf.keras.layers.LayerNormalization(epsilon=1e-6)
-
-
-    def call(self, inputs, training):
-        # Attention block
-        x = self.norm_0(inputs)
-        x = self.mha(x,x)
-        #x = self.dropout_0(x, training=training)
-        x = x + inputs
-
-        # MLP block
-        y = self.norm_1(x)
-        y = self.dense_0(y)
-        y = self.dense_1(y)
-        #y = self.dropout_1(y, training=training)
-
-        return x + y
-
 
 
 def Encoder2(embed_dim,
@@ -184,25 +138,21 @@ def Decoder(embed_dim,
                 # Create a multi-head attention layer.
         x = tf.keras.layers.LayerNormalization(epsilon=1e-6)(x)
         
-        x = tf.keras.layers.MultiHeadAttention(
+        att = tf.keras.layers.MultiHeadAttention(
             num_heads=num_heads, key_dim=(inputs.shape[-1] // num_heads), dropout=0.0
         )(x, x)
 
         # Skip connection 1.
-        x = x + inputs
+        x = x + att
 
         # Layer normalization 2.
         y = tf.keras.layers.LayerNormalization(epsilon=1e-6)(x)
-        
         y = tf.keras.layers.Dense(int(decoder_embed_dim * mlp_ratio), activation='gelu')(y)
-        #y = tf.keras.layers.Lambda(lambda x: tf.keras.activations.gelu(x, approximate=False))(y)
         y = tf.keras.layers.Dense(inputs.shape[-1], activation='linear')(y)
         y = tf.keras.layers.Dropout(0.0)(y)
 
         # Skip connection 2.
-        #x = tf.keras.layers.Add()([x3, x2])
         x = x + y
-        #x = tf.keras.layers.LayerNormalization(epsilon=1e-6)(x)
     
     x = tf.keras.layers.LayerNormalization(epsilon=1e-6)(x)
     x = tf.keras.layers.Dense(units=patch_size**2*in_channel, activation="linear", name="output_layer")(x)
