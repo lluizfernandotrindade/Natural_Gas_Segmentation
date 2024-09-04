@@ -6,9 +6,9 @@ from src.util import torch_gather, tf_function, tf_patchify, tf_unpatchify, tf_p
 import numpy as np
 
 class MaskedAutoencoder(tf.keras.Model):
-    """ Masked Autoencoder with VisionTransformer backbone
+    """ Masked Autoencoder with Transformer backbone
     """
-    def __init__(self, inputs, img_size=224, patch_size=16, in_chans=1,
+    def __init__(self, img_size=224, patch_size=16, in_chans=1,
                  embed_dim=384, depth=12, num_heads=16,
                  decoder_embed_dim=512, decoder_depth=8, decoder_num_heads=16,
                  mlp_ratio=4., mask_ratio=0.75, batch_size=8):
@@ -46,7 +46,6 @@ class MaskedAutoencoder(tf.keras.Model):
                                      )
         
         
-        self.norm = tf.keras.layers.LayerNormalization(epsilon=1e-6)
         # --------------------------------------------------------------------------
 
         # --------------------------------------------------------------------------
@@ -148,44 +147,6 @@ class MaskedAutoencoder(tf.keras.Model):
 
         return x_masked, mask, ids_restore
 
-
-    def random_maskingNew(self, x, mask_ratio):
-        """
-        Perform per-sample random masking by per-sample shuffling.
-        Per-sample shuffling is done by argsort random noise.
-        x: [N, L, D], sequence
-        """
-        N, L, D = x.shape  # batch, length, dim
-        len_keep = int(L * (1 - mask_ratio))
-        col_length = int(L**0.5)
-        
-        if N != None:
-            self.batch_size = N 
-          
-        noise = tf.random.normal([self.batch_size, col_length])
-        noise = tf.tile(noise, [1, col_length])
-
-        # sort noise for each sample
-        ids_shuffle = tf.argsort(noise, axis=1)  # ascend: small is keep, large is remove
-        ids_restore = tf.argsort(ids_shuffle, axis=1)
-
-        # keep the first subset
-        ids_keep = ids_shuffle[:, :len_keep]
-        ids_keep = tf.expand_dims(ids_keep, axis=-1)
-        ids_keep = tf.repeat(ids_keep, repeats=D, axis=-1)
-
-        x_masked = torch_gather(x, ids_keep, 1)
-        
-        # generate the binary mask: 0 is keep, 1 is remove
-        mask = tf.ones([self.batch_size, L])
-
-        mask = tf_function(mask, len_keep)
-
-        # unshuffle to get the binary mask
-        mask = torch_gather(mask, ids_restore, 1)
-
-        return x_masked, mask, ids_restore
-
     def forward_encoder(self, x, mask_ratio):
         # embed patches
         x = self.patch_embed(x)
@@ -243,7 +204,7 @@ class MaskedAutoencoder(tf.keras.Model):
             
     def train_step(self, imgs):
                  
-        with tf.GradientTape(persistent=True) as tape:
+        with tf.GradientTape() as tape:
             latent, mask, ids_restore = self.forward_encoder(imgs, 
                                                              self.mask_ratio)
             pred = self.forward_decoder(latent, ids_restore)  # [N, L, p*p*3]
@@ -257,12 +218,11 @@ class MaskedAutoencoder(tf.keras.Model):
         train_vars = [
             self.encoder_block.trainable_variables,
             self.decoder_blocks.trainable_variables,
-            self.mask_token.trainable_variables,
             self.decoder_embed.trainable_variables,
             self.patch_embed.trainable_variables,
         ]
         
-        grads = tape.gradient(combined_loss, train_vars)
+        grads = tape.gradient(loss, train_vars)
         #del tape
 
         tv_list = []
@@ -279,7 +239,7 @@ class MaskedAutoencoder(tf.keras.Model):
 
     def test_step(self, imgs):
         
-        with tf.GradientTape(persistent=True) as tape:
+        with tf.GradientTape() as tape:
             latent, mask, ids_restore = self.forward_encoder(imgs, 
                                                              self.mask_ratio
                                                             )

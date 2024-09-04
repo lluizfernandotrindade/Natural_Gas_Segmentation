@@ -36,7 +36,7 @@ def plot_result(x_test,
     visible = original_image * (1 - mask_) + reconstructed_image * mask_
     view_masked_data = 0.5*(np.ones(mask_.shape) - (1 - mask_))
     
-    ssim_index, ssim_map = metrics.SSIM(np.squeeze(original_image, axis=-1),
+    ssim_index, ssim_map = src.metrics.SSIM(np.squeeze(original_image, axis=-1),
                                         np.squeeze(visible, axis=-1)
                                        )
 

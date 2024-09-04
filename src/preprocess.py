@@ -2,6 +2,13 @@ import skimage
 import numpy as np
 
 
+def standarlization_patches(patches_array):
+    
+    for i in range(patches_array.shape[0]):
+        patches_array[i,:,:] = (patches_array[i,:,:] - patches_array[i,:,:].mean()) / patches_array[i,:,:].std()
+
+    return patches_array
+
 def normalize_between_zero_one(
     data
 ):    
